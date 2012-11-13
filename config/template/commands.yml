@@ -1,0 +1,24 @@
+---
+suites:
+  yeti:
+    location: USER_INPUT
+    mandatory: false
+  bizops:
+    location: USER_INPUT
+    mendatory: false
+commands:
+  help:
+    usage: help
+    desc: list all avaiable commands
+  tests:
+    usage: tests
+    desc: run default multiple test suites.
+  aliases:
+    usage: aliases
+    desc: Show the list of available command aliases
+  add alias:
+    usage: add alias <name> <commands>
+    desc: organize multiple tests under one alias
+  delete alias:
+    usage: delete alias <name>
+    desc: remove alias
