@@ -1,11 +1,4 @@
 ---
-suites:
-  yeti:
-    location: USER_INPUT
-    mandatory: false
-  bizops:
-    location: USER_INPUT
-    mendatory: false
 commands:
   help:
     usage: help
@@ -13,12 +6,10 @@ commands:
   tests:
     usage: tests
     desc: run default multiple test suites.
-  aliases:
-    usage: aliases
-    desc: Show the list of available command aliases
-  add alias:
-    usage: add alias <name> <commands>
-    desc: organize multiple tests under one alias
-  delete alias:
-    usage: delete alias <name>
-    desc: remove alias
+  "add suite":
+    usage: "add suite <Test Suite Path> [alias]"
+    desc: "add specific test suite to tac, and one alias can be given to resolve naming conflict"
+  suites:
+    usage: "suites"
+    desc: "list all available test suites registered "
+

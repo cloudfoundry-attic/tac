@@ -1,0 +1,4 @@
+---
+suites:
+  yeti: /user/pinx/src/cf-release/src/tests
+  bizops:

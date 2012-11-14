@@ -102,7 +102,7 @@ module CTT::Cli
 
       # handle runtime commands
       #
-      @configs.configs["suites"].keys.each do |s|
+      @configs.suites["suites"].keys.each do |s|
         if command =~ /#{s}/
           pieces = command.split(" ")
           pieces.insert(0, "") if pieces.size == 1

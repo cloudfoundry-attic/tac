@@ -7,9 +7,11 @@ module CTT::Cli
 
     attr_accessor :configs
 
-    attr_reader   :commands
+    attr_reader   :commands, :suites
 
     def initialize
+      @suites = Suites.new.suites
+
       load
       load_commands
       save
@@ -26,7 +28,7 @@ module CTT::Cli
 
     def load_commands
       commands = {}
-      @configs["suites"].each do |suite, _|
+      @suites["suites"].each do |suite, _|
         # for each suite, three commands should be added.
         # - configure suite
         # - suite [subcommand]

@@ -4,3 +4,4 @@ source :rubygems
 gemspec
 
 gem "rake"
+gem "ruby-debug19"
