@@ -4,6 +4,7 @@ require "optparse"
 require "yaml"
 require "paint"
 require "interact"
+require "terminal-table"
 
 
 
@@ -16,4 +17,5 @@ require "cli/errors"
 require "cli/runner"
 require "cli/base"
 require "cli/commands/help"
+require "cli/commands/suite_configure"
 require "cli/commands/test_suite_management"

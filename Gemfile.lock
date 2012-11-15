@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tac-cli (0.0.1)
+    tac-cli (0.0.2)
       interact (~> 0.4.8)
       json_pure (~> 1.6.1)
       paint (~> 0.8.5)

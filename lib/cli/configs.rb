@@ -2,9 +2,9 @@
 module CTT::Cli
   class Configs
 
-    attr_accessor :configs
+    attr_accessor :configs, :suites
 
-    attr_reader   :commands, :suites
+    attr_reader   :commands
 
     def initialize
       @suites = Suites.new.suites

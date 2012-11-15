@@ -1,18 +1,20 @@
 
 module CTT::Cli::Command
 
-  USER_INPUT               = "USER_INPUT"
-  TEST_SUITE_CONFIG_FILE   = "tac.yml"
-  SUPPORT_OPTIONS          = {"--force" => "bypass git dirty state check"}
-
   class TestSuite < Base
+
+    USER_INPUT               = "USER_INPUT"
+    TEST_SUITE_CONFIG_FILE   = "tac.yml"
+    SUPPORT_OPTIONS          = {"--force" => "bypass git dirty state check"}
+
     include Interactive
 
     def initialize(action, suite, args, runner)
       super(args, runner)
       @action = action
       @suite = suite
-      @configs = @runner.configs
+      @configs = runner.configs
+      @suites = runner.suites
     end
 
     def run
@@ -84,7 +86,7 @@ module CTT::Cli::Command
 
       threads = []
       threads << Thread.new do
-        Dir.chdir(@configs.configs["suites"][@suite]["location"])
+        Dir.chdir(@suites.suites["suites"][@suite])
         # dependency should be successful before run testing command
         dependencies.each do |d|
           `#{d}`
@@ -99,16 +101,8 @@ module CTT::Cli::Command
     end
 
     def check_configuration
-      location = @configs.configs["suites"][@suite]["location"]
-      if location == USER_INPUT
-        say("test suite: #{@suite} is not configured. Abort", :red)
-        say("please run #{yellow("configure #{@suite}")} first.")
-        exit(1)
-      end
-
-      unless File.exists?(File.join(location, TEST_SUITE_CONFIG_FILE))
-        say("configure file: #{TEST_SUITE_CONFIG_FILE} for test suite: " +
-                "#{@suite} does not exist.", :red)
+      unless @suites.suites["suites"].has_key?(@suite)
+        say("suite configure file: #{@suites.file} did not has key: #{@suite}")
         exit(1)
       end
     end
@@ -127,7 +121,7 @@ module CTT::Cli::Command
       `which git`
       return false unless $? == 0
 
-      Dir.chdir(@configs.configs["suites"][@suite]["location"])
+      Dir.chdir(@suites.suites["suites"][@suite])
       (File.directory?(".git") || File.directory?(File.join("..", ".git"))) \
         && `git status --porcelain | wc -l`.to_i > 0
     end
@@ -167,7 +161,7 @@ module CTT::Cli::Command
     end
 
     def get_suite_configs
-      suite_configs_path = File.join(@configs.configs["suites"][@suite]["location"],
+      suite_configs_path = File.join(@suites.suites["suites"][@suite],
                                      TEST_SUITE_CONFIG_FILE)
       @suite_configs ||= YAML.load_file(suite_configs_path)
       unless @suite_configs.is_a?(Hash)
