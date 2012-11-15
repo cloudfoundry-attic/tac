@@ -5,3 +5,4 @@ gemspec
 
 gem "rake"
 gem "ruby-debug19"
+gem "rspec"

@@ -1,4 +1,5 @@
 vendor/
+.bundle/
 config/commands.yml
 
 *.gem

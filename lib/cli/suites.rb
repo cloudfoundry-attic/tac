@@ -8,25 +8,29 @@ module CTT::Cli
 
     attr_accessor :suites
 
+    attr_reader   :file
+
     def initialize
       load
       save
     end
 
     def load
-      unless Dir.exists?(File.dirname(SUITES_CONFIG_FILE))
-        Dir.mkdir(File.dirname(SUITES_CONFIG_FILE))
+      @file = SUITES_CONFIG_FILE
+      unless Dir.exists?(File.dirname(@file))
+        Dir.mkdir(File.dirname(@file))
       end
 
-      if File.exists?(SUITES_CONFIG_FILE)
-        @suites = YAML.load_file(SUITES_CONFIG_FILE)
+      if File.exists?(@file)
+        @suites = YAML.load_file(@file)
       else
         @suites = {"suites" => {}}
       end
     end
 
     def save
-      File.open(SUITES_CONFIG_FILE, "w") { |f| f.write YAML.dump(@suites) }
+      File.open(@file, "w") { |f| f.write YAML.dump(@suites) }
     end
+
   end
 end
