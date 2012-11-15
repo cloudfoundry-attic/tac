@@ -9,6 +9,7 @@ require "interact"
 
 require "cli/version"
 require "cli/ctt_extensions"
+require "cli/cmd_consts"
 require "cli/suites"
 require "cli/configs"
 require "cli/errors"

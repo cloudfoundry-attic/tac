@@ -7,8 +7,7 @@ describe CTT::Cli::Command::Help do
     args = "help abc def"
     output = `./bin/tac #{args}`
     keywords = ["help", "tests",
-                "add suite <Test Suite Path> [alias]",
-                "suites"]
+                "add suite <Test Suite Path> [alias]"]
     keywords.each do |w|
       output.should include w
     end
