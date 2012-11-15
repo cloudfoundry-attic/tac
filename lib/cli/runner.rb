@@ -4,7 +4,7 @@ module CTT::Cli
   class Runner
 
     attr_reader    :commands
-    attr_accessor  :configs
+    attr_accessor  :configs, :suites
 
     # @param [Array] args
     def self.run(args)
@@ -19,6 +19,7 @@ module CTT::Cli
 
       @configs = Configs.new
       @commands = @configs.commands
+      @suites = Suites.new
     end
 
     def run
@@ -121,6 +122,8 @@ module CTT::Cli
           case command
             when "help"
               Command::Help.new(args, self)
+            when "add suite", "delete suite", "suites"
+              Command::SuiteConfig.new(command, args, self)
             else
               nil
           end

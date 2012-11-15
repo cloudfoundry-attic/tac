@@ -1,4 +1,6 @@
 ---
+name: "yeti"
+
 commands:
   full:
     exec: "bundle exec rake full"
