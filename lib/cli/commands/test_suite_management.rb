@@ -9,8 +9,13 @@ module CTT::Cli::Command
 
     include Interactive
 
-    def initialize(action, suite, args, runner)
+    def initialize(command, args, runner)
       super(args, runner)
+
+      pieces = command.split(" ")
+      pieces.insert(0, "") if pieces.size == 1
+      action, suite = pieces
+
       @action = action
       @suite = suite
       @configs = runner.configs
@@ -88,6 +93,7 @@ module CTT::Cli::Command
       threads << Thread.new do
         Dir.chdir(@suites.suites["suites"][@suite])
         # dependency should be successful before run testing command
+        say("preparing test suite: #{@suite}...")
         dependencies.each do |d|
           `#{d}`
           exit(1) unless $? == 0

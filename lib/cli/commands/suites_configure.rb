@@ -1,7 +1,7 @@
 
 module CTT::Cli::Command
 
-  class SuiteConfig < Base
+  class SuitesConfig < Base
 
     TEST_SUITE_CONFIG_FILE   = "tac.yml"
 
@@ -15,7 +15,7 @@ module CTT::Cli::Command
       @action, _ = pieces
 
       @configs = @runner.configs
-      @suites = CTT::Cli::Suites.new
+      @suites = @runner.suites
     end
 
     def run

@@ -105,10 +105,10 @@ module CTT::Cli
       #
       @configs.suites["suites"].keys.each do |s|
         if command =~ /#{s}/
-          pieces = command.split(" ")
-          pieces.insert(0, "") if pieces.size == 1
-          action, suite = pieces
-          return Command::TestSuite.new(action, suite, args, self)
+          #pieces = command.split(" ")
+          #pieces.insert(0, "") if pieces.size == 1
+          #action, suite = pieces
+          return Command::TestSuite.new(command, args, self)
         end
       end
 
@@ -123,7 +123,9 @@ module CTT::Cli
             when "help"
               Command::Help.new(args, self)
             when "add suite", "delete suite", "suites"
-              Command::SuiteConfig.new(command, args, self)
+              Command::SuitesConfig.new(command, args, self)
+            when "tests"
+              Command::MultipleTests.new(args, self)
             else
               nil
           end

@@ -6,6 +6,8 @@ module CTT::Cli
                                  "desc" => "run default multiple test suites."},
                      "add suite" => {"usage" => "add suite",
                                       "desc" => "add specific test suite to tac"},
+                     "delete suite" => {"usage" => "delete suite",
+                                        "desc" => "list all test suites configuration"},
                      "suites" => {"usage" => "suites",
                                   "desc" => "list all test suites configuration"}}
 
