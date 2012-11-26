@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency "terminal-table", "~>1.4.2"
   s.add_dependency "paint", "~>0.8.5"
   s.add_dependency "interact", "~>0.4.8"
+  s.add_dependency "libxml-ruby", "~>2.3.3"
 end

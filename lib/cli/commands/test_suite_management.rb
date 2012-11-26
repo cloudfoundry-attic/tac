@@ -3,8 +3,8 @@ module CTT::Cli::Command
 
   class TestSuite < Base
 
-    USER_INPUT               = "USER_INPUT"
-    TEST_SUITE_CONFIG_FILE   = "tac.yml"
+    #USER_INPUT               = "USER_INPUT"
+    #TEST_SUITE_CONFIG_FILE   = "tac.yml"
     SUPPORT_OPTIONS          = {"--force" => "bypass git dirty state check"}
 
     include Interactive
@@ -168,7 +168,7 @@ module CTT::Cli::Command
 
     def get_suite_configs
       suite_configs_path = File.join(@suites.suites["suites"][@suite],
-                                     TEST_SUITE_CONFIG_FILE)
+                                     CTT::Cli::TEST_SUITE_CONFIG_FILE)
       @suite_configs ||= YAML.load_file(suite_configs_path)
       unless @suite_configs.is_a?(Hash)
         say("invalid yaml format for file: #{suite_configs_path}", :red)
