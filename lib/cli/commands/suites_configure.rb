@@ -3,7 +3,7 @@ module CTT::Cli::Command
 
   class SuitesConfig < Base
 
-    TEST_SUITE_CONFIG_FILE   = "tac.yml"
+    #TEST_SUITE_CONFIG_FILE   = "tac.yml"
 
     include Interactive
 
