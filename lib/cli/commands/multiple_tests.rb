@@ -3,17 +3,41 @@ module CTT::Cli::Command
 
   class MultipleTests < Base
 
+    MAX_RERUN_TIMES     =   10
+
     include CTT::Cli
 
-    def initialize(args, runner)
+    def initialize(command, args, runner)
       super(args, runner)
       @suites = @runner.suites
+      @command = command
     end
 
     def run
+      eval(@command)
+    end
+
+    def tests
       say("run multiple test suites", :green)
-      #run_tests
+      run_tests
       show_summary
+    end
+
+    def rerun
+      say("rerun failed cases for multiple test suites", :green)
+      rerun_tests
+      show_summary(true)
+    end
+
+    def rerun_tests
+      index = 1
+      @suites.suites["suites"].each do |name, _|
+        say("#{index}) start to run failed cases for test suite: #{name}\n", :yellow)
+        args = @args.insert(0, @command)
+        cmd = TestSuite.new(name, args, @runner)
+        cmd.run
+        index += 1
+      end
     end
 
     def run_tests
@@ -26,7 +50,7 @@ module CTT::Cli::Command
       end
     end
 
-    def show_summary
+    def show_summary(rerun = false)
       summary = {:total => 0,
                  :failed => 0,
                  :pending => 0,
@@ -41,7 +65,14 @@ module CTT::Cli::Command
           say("no results field in #{suite_config_path}. abort!", :red)
           exit(1)
         end
-        result_file   = File.join(path, suite_config["results"], TEST_RESULT_FILE)
+
+        result_path   = File.join(path, suite_config["results"])
+        if rerun
+          result_file = File.join(get_rerun_folder(result_path), TEST_RESULT_FILE)
+        else
+          result_file   = File.join(result_path, TEST_RESULT_FILE)
+        end
+
         report        = TestReport.new(result_file)
         report.parse
 
@@ -86,6 +117,19 @@ module CTT::Cli::Command
       time_str += (t % 3600 / 60).to_i.to_s + " minutes " if t > 60
       time_str += (t % 60).to_f.round(2).to_s + " seconds"
       time_str
+    end
+
+    def get_rerun_folder(result_folder)
+      rerun_folder = result_folder
+      i = MAX_RERUN_TIMES
+      while(i > 0)
+        if File.exists?(File.join(result_folder, "rerun#{i}"))
+          rerun_folder = File.join(result_folder, "rerun#{i}")
+          break
+        end
+        i -= 1
+      end
+      rerun_folder
     end
   end
 end

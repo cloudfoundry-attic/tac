@@ -4,6 +4,8 @@ module CTT::Cli
                                 "desc" => "list all available commands"},
                      "tests" => {"usage" => "tests",
                                  "desc" => "run default multiple test suites."},
+                     "rerun" => {"usage" => "rerun",
+                                 "desc" => "rerun failed cases for multiple test suites."},
                      "add suite" => {"usage" => "add suite",
                                       "desc" => "add specific test suite to tac"},
                      "delete suite" => {"usage" => "delete suite",

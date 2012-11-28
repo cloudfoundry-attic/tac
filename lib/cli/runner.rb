@@ -98,9 +98,6 @@ module CTT::Cli
     end
 
     def get_command_handler(command, args)
-
-      handler = nil
-
       # handle runtime commands
       #
       @configs.suites["suites"].keys.each do |s|
@@ -124,8 +121,8 @@ module CTT::Cli
               Command::Help.new(args, self)
             when "add suite", "delete suite", "suites"
               Command::SuitesConfig.new(command, args, self)
-            when "tests"
-              Command::MultipleTests.new(args, self)
+            when "tests", "rerun"
+              Command::MultipleTests.new(command, args, self)
             else
               nil
           end
