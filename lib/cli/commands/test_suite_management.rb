@@ -104,6 +104,9 @@ module CTT::Cli::Command
       end
 
       threads.each { |t| t.join }
+
+      collector = ClientCollector.new(@runner.command, @suite, @runner)
+      collector.post
     end
 
     def check_configuration

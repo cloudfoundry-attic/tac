@@ -3,8 +3,9 @@ module CTT::Cli
 
   class Runner
 
-    attr_reader    :commands
+    attr_reader    :commands, :uuid, :command
     attr_accessor  :configs, :suites
+
 
     # @param [Array] args
     def self.run(args)
@@ -17,9 +18,10 @@ module CTT::Cli
       banner = "Usage: tac [<options>] <command> [<args>]"
       @option_parser = OptionParser.new(banner)
 
-      @configs = Configs.new
+      @configs  = Configs.new
       @commands = @configs.commands
-      @suites = Suites.new
+      @suites   = Suites.new
+      @uuid     = UUIDTools::UUID.random_create
     end
 
     def run
@@ -42,6 +44,7 @@ module CTT::Cli
         exit(1)
       end
 
+      @command = command
       execute(command, args)
 
     end

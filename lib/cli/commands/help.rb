@@ -8,8 +8,6 @@ module CTT::Cli::Command
         say(details["usage"], :green)
         say("\t#{details["desc"]}\n")
       end
-
     end
-
   end
 end
