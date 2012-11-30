@@ -6,6 +6,10 @@ require "paint"
 require "interact"
 require "terminal-table"
 require "libxml"
+require "tempfile"
+require "uuidtools"
+require "etc"
+require "restclient"
 
 
 
@@ -19,6 +23,7 @@ require "cli/errors"
 require "cli/runner"
 require "cli/base"
 require "cli/report"
+require "cli/client_collector"
 require "cli/commands/help"
 require "cli/commands/suites_configure"
 require "cli/commands/multiple_tests"
