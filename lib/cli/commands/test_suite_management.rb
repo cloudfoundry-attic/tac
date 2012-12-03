@@ -90,8 +90,9 @@ module CTT::Cli::Command
       dependencies, command = parse_command
 
       threads = []
+      pwd = Dir.pwd
+      Dir.chdir(@suites.suites["suites"][@suite])
       threads << Thread.new do
-        Dir.chdir(@suites.suites["suites"][@suite])
         # dependency should be successful before run testing command
         say("preparing test suite: #{@suite}...")
         dependencies.each do |d|
@@ -102,7 +103,7 @@ module CTT::Cli::Command
         say("\nrun command: #{yellow(command)}")
         system(command)
       end
-
+      Dir.chdir(pwd)
       threads.each { |t| t.join }
 
       collector = ClientCollector.new(@runner.command, @suite, @runner)
