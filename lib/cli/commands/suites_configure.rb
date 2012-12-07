@@ -5,7 +5,7 @@ module CTT::Cli::Command
 
     #TEST_SUITE_CONFIG_FILE   = "tac.yml"
 
-    include Interactive
+    include Interactive, CTT::Cli
 
     def initialize(command, args, runner)
       super(args, runner)

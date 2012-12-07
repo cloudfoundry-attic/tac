@@ -26,7 +26,7 @@ module CTT::Cli
           response = RestClient.post("#{RESULTS_SERVER_URL}/tac/upload", payload)
         rescue
         end
-        break if response.code == 200
+        break if (response.nil? || response.code == 200)
       end
       @tar_file.unlink
     end

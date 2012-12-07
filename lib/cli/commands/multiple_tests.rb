@@ -41,6 +41,7 @@ module CTT::Cli::Command
     end
 
     def run_tests
+      say("**** Run multiple tests ****", :yellow)
       index = 1
       @suites.suites["suites"].each do |name, _|
         say("#{index}) start to run test suite: #{name}\n", :yellow)
@@ -90,6 +91,7 @@ module CTT::Cli::Command
     end
 
     def print_cases_summary(summary)
+      say("**** Summary for multiple tests ****", :yellow)
       say("\nFinished in #{format_time(summary[:duration])}")
 
       color = :green
@@ -99,7 +101,7 @@ module CTT::Cli::Command
     end
 
     def print_failed_cases(summary)
-      unless summary[:failed_cases].empty?
+      if summary[:failed] > 0
         say("\nFailures:")
         summary[:failed_cases].each do |suite, cases|
           say("  Test Suite: #{suite}", :yellow)

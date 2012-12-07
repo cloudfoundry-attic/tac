@@ -7,7 +7,7 @@ module CTT::Cli::Command
     #TEST_SUITE_CONFIG_FILE   = "tac.yml"
     SUPPORT_OPTIONS          = {"--force" => "bypass git dirty state check"}
 
-    include Interactive
+    include Interactive, CTT::Cli
 
     def initialize(command, args, runner)
       super(args, runner)
@@ -96,16 +96,20 @@ module CTT::Cli::Command
         # dependency should be successful before run testing command
         say("preparing test suite: #{@suite}...")
         dependencies.each do |d|
-          `#{d}`
-          exit(1) unless $? == 0
+          output = `#{d}`
+          unless $? == 0
+            say(output)
+            say("fail to execute dependency command: #{d}. abort!", :red)
+            exit(1)
+          end
         end
 
         say("\nrun command: #{yellow(command)}")
         system(command)
       end
-      Dir.chdir(pwd)
-      threads.each { |t| t.join }
 
+      threads.each { |t| t.join }
+      Dir.chdir(pwd)
       collector = ClientCollector.new(@runner.command, @suite, @runner)
       collector.post
     end
