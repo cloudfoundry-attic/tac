@@ -17,18 +17,18 @@ module CTT::Cli
       collect
 
       payload = @info.dup
-      payload[:results_file]  = @tar_file
-      payload[:multipart]     = true
+      payload[:file]        = File.open(@tar_file_path, "r")
+      payload[:multipart]   = true
 
       #retry 3 times
       3.times do
         begin
           response = RestClient.post("#{RESULTS_SERVER_URL}/tac/upload", payload)
+          break if response.code == 200
         rescue
         end
-        break if (response.nil? || response.code == 200)
       end
-      @tar_file.unlink
+      FileUtils.rm(payload[:file].path)
     end
 
     def collect
@@ -87,20 +87,23 @@ module CTT::Cli
         say("report path did not exists. abort!", :red)
         exit(1)
       end
-      @tar_file = zip_test_reports(report_path)
+      @tar_file_path = zip_test_reports(report_path)
     end
 
     def zip_test_reports(reports_path)
-      tar_file = Tempfile.new(%w(reports .tgz))
-      `tar czf #{tar_file.path} #{reports_path} 2>&1`
+
+      temp_file_path = File.join(Dir.tmpdir, "reports-#{@uuid}.tgz")
+      pwd = Dir.pwd
+      Dir.chdir(File.dirname(reports_path))
+      `tar czf #{temp_file_path} #{File.basename(reports_path)} 2>&1`
       unless $?.exitstatus == 0
         say("fail to tarball test reports. abort!", :red)
-        tar_file.unlink
+        FileUtils.rm(temp_file_path)
         exit(1)
       end
-      tar_file
+      Dir.chdir(pwd)
+
+      temp_file_path
     end
-
-
   end
 end
