@@ -11,7 +11,7 @@ task :build do
   src   = File.join(config_path, "template/commands.yml")
   dest  = File.join(config_path, "commands.yml")
   FileUtils.cp(src, dest)
-  system("gem build tac-cli.gemspec -V")
+  system("gem build orc-cli.gemspec -V")
 end
 
 if defined?(RSpec)

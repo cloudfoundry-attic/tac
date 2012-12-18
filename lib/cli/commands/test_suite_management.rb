@@ -4,7 +4,7 @@ module CTT::Cli::Command
   class TestSuite < Base
 
     #USER_INPUT               = "USER_INPUT"
-    #TEST_SUITE_CONFIG_FILE   = "tac.yml"
+    #TEST_SUITE_CONFIG_FILE   = "orc.yml"
     SUPPORT_OPTIONS          = {"--force" => "bypass git dirty state check"}
 
     include Interactive, CTT::Cli

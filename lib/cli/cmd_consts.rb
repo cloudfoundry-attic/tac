@@ -7,7 +7,7 @@ module CTT::Cli
                      "rerun" => {"usage" => "rerun",
                                  "desc" => "rerun failed cases for multiple test suites."},
                      "add suite" => {"usage" => "add suite",
-                                      "desc" => "add specific test suite to tac"},
+                                      "desc" => "add specific test suite to orc"},
                      "delete suite" => {"usage" => "delete suite",
                                         "desc" => "list all test suites configuration"},
                      "suites" => {"usage" => "suites",

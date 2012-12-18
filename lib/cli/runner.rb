@@ -15,7 +15,7 @@ module CTT::Cli
     def initialize(args)
       @args = args
 
-      banner = "Usage: tac [<options>] <command> [<args>]"
+      banner = "Usage: orc [<options>] <command> [<args>]"
       @option_parser = OptionParser.new(banner)
 
       @configs  = Configs.new
@@ -55,7 +55,7 @@ module CTT::Cli
 
       opts.on("-v", "--version", "Show version") do
         @options[:version] = true
-        say("tac %s" % [CTT::Cli::VERSION])
+        say("orc %s" % [CTT::Cli::VERSION])
         exit(0)
       end
 

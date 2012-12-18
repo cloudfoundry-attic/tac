@@ -4,7 +4,7 @@ module CTT::Cli
   class Suites
 
     SUITES_CONFIG_FILE =
-        File.absolute_path(File.join(ENV["HOME"], ".tac/suites.yml"))
+        File.absolute_path(File.join(ENV["HOME"], ".orc/suites.yml"))
 
     attr_accessor :suites
 

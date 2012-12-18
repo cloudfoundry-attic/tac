@@ -8,7 +8,7 @@ commands:
     desc: run default multiple test suites.
   "add suite":
     usage: "add suite <Test Suite Path> [alias]"
-    desc: "add specific test suite to tac, and one alias can be given to resolve naming conflict"
+    desc: "add specific test suite to orc, and one alias can be given to resolve naming conflict"
   suites:
     usage: "suites"
     desc: "list all available test suites registered "
