@@ -4,6 +4,7 @@ module CTT::Cli
   class ClientCollector
 
     def initialize(command, suite, runner)
+      @url  = runner.url
       @info = {}
       @suite  = suite
       @suites = runner.suites
@@ -11,6 +12,7 @@ module CTT::Cli
 
       @info[:suite]   = @suite
       @info[:command] = command
+
     end
 
     def post
@@ -23,7 +25,7 @@ module CTT::Cli
       #retry 3 times
       3.times do
         begin
-          response = RestClient.post("#{RESULTS_SERVER_URL}/tac/upload", payload)
+          response = RestClient.post("#{@url}/upload", payload)
           break if response.code == 200
         rescue
         end
@@ -33,6 +35,7 @@ module CTT::Cli
 
     def collect
       get_os
+      get_ruby_version
       get_test_reports
       get_uuid
       get_timestamp
@@ -74,6 +77,9 @@ module CTT::Cli
       end
     end
 
+    def get_ruby_version
+      @info[:ruby_version] = `ruby -v`
+    end
 
     def get_test_reports
       suite_config_path = File.absolute_path(File.join(@suites.suites["suites"][@suite], TEST_SUITE_CONFIG_FILE))
