@@ -3,7 +3,7 @@ module CTT::Cli
 
   class Runner
 
-    attr_reader    :commands, :uuid, :command
+    attr_reader    :commands, :uuid, :command, :url, :log
     attr_accessor  :configs, :suites
 
 
@@ -22,6 +22,9 @@ module CTT::Cli
       @commands = @configs.commands
       @suites   = Suites.new
       @uuid     = UUIDTools::UUID.random_create
+      @log      = Logger.new(File.join(ENV["HOME"], ".orc/orc.log"), 'weekly')
+      @url      = ENV['ORC_RESULTS_SERVER_URL'] ?
+          format_url(ENV['ORC_RESULTS_SERVER_URL']) : RESULTS_SERVER_URL
     end
 
     def run
@@ -129,6 +132,13 @@ module CTT::Cli
             else
               nil
           end
+    end
+
+    def format_url(url)
+      unless url =~ /^http/
+        url = "http://#{url}"
+      end
+      url
     end
   end
 end

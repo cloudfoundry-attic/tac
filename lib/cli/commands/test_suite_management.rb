@@ -16,10 +16,12 @@ module CTT::Cli::Command
       pieces.insert(0, "") if pieces.size == 1
       action, suite = pieces
 
-      @action = action
-      @suite = suite
-      @configs = runner.configs
-      @suites = runner.suites
+      @action   = action
+      @suite    = suite
+      @configs  = runner.configs
+      @suites   = runner.suites
+      @url      = runner.url
+      @log      = runner.log
     end
 
     def run
@@ -115,6 +117,7 @@ module CTT::Cli::Command
     end
 
     def check_configuration
+      check_orc_version
       unless @suites.suites["suites"].has_key?(@suite)
         say("suite configure file: #{@suites.file} did not has key: #{@suite}")
         exit(1)
@@ -183,6 +186,43 @@ module CTT::Cli::Command
         exit(1)
       end
       @suite_configs
+    end
+
+    def check_orc_version
+      response = nil
+      #retry 3 times
+      3.times do
+        begin
+          response = RestClient.get("#{@url}/version")
+          @log.debug("check version. response body: #{response.to_s}, response code: #{response.code}")
+          break if response.code == 200
+        rescue Exception => e
+          @log.error("check version. url: #{@url}/version, #{e.to_s}")
+        end
+      end
+
+      if response
+        target = JSON.parse(response.to_s)["version"]
+        if need_upgrade?(VERSION, target)
+          say("your orc-cli gem should be >= #{target}. Abort!", :red)
+          exit(1)
+        end
+      end
+    end
+
+    def need_upgrade?(current, target)
+      upgrade = false
+      curr_vers = current.split(".")
+      targ_vers = target.split(".")
+
+      targ_vers.each_with_index do |item, index|
+        if item > curr_vers[index]
+          upgrade = true
+          break
+        end
+      end
+
+      upgrade
     end
   end
 end

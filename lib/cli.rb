@@ -10,6 +10,8 @@ require "tempfile"
 require "uuidtools"
 require "etc"
 require "restclient"
+require "logger"
+require "json"
 
 
 
