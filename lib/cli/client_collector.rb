@@ -4,6 +4,7 @@ module CTT::Cli
   class ClientCollector
 
     def initialize(command, suite, runner)
+      @log  = runner.log
       @url  = runner.url
       @info = {}
       @suite  = suite
@@ -26,8 +27,11 @@ module CTT::Cli
       3.times do
         begin
           response = RestClient.post("#{@url}/upload", payload)
+          @log.debug("post results. URL: #{@url}/upload, payload: #{payload}," +
+                         " response code: #{response.code}")
           break if response.code == 200
-        rescue
+        rescue Exception => e
+          @log.error("post results. URL: #{@url}/upload. Error: #{e.to_s}")
         end
       end
       FileUtils.rm(payload[:file].path)
@@ -37,6 +41,7 @@ module CTT::Cli
       get_os
       get_ruby_version
       get_test_reports
+      get_git_hash
       get_uuid
       get_timestamp
       get_hostname
@@ -77,12 +82,23 @@ module CTT::Cli
       end
     end
 
+    def get_git_hash
+      pwd = Dir.pwd
+      Dir.chdir(@suite_path)
+      begin
+        @info[:git_hash] = `git log --oneline -n 1`
+      rescue
+      end
+      Dir.chdir(pwd)
+    end
+
     def get_ruby_version
       @info[:ruby_version] = `ruby -v`
     end
 
     def get_test_reports
-      suite_config_path = File.absolute_path(File.join(@suites.suites["suites"][@suite], TEST_SUITE_CONFIG_FILE))
+      @suite_path = File.absolute_path(@suites.suites["suites"][@suite])
+      suite_config_path = File.join(@suite_path, TEST_SUITE_CONFIG_FILE)
       suite_config = YAML.load_file(suite_config_path)
       unless suite_config["results"]
         say("no results field in #{suite_config_path}. abort!", :red)
