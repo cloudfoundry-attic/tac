@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orc-cli (0.1.1)
+    orc-cli (0.1.2)
       interact (~> 0.4.8)
       json_pure (~> 1.6.1)
       libxml-ruby (~> 2.3.3)

@@ -41,20 +41,15 @@ module CTT::Cli
       get_os
       get_ruby_version
       get_test_reports
-      get_git_hash
+      get_git_info
       get_uuid
       get_timestamp
       get_hostname
-      get_username
       get_ipaddr
     end
 
     def get_hostname
       @info[:hostname] = `hostname`.strip
-    end
-
-    def get_username
-      @info[:username] = Etc.getlogin
     end
 
     def get_ipaddr
@@ -82,11 +77,13 @@ module CTT::Cli
       end
     end
 
-    def get_git_hash
+    def get_git_info
       pwd = Dir.pwd
       Dir.chdir(@suite_path)
       begin
         @info[:git_hash] = `git log --oneline -n 1`
+        @info[:email]    = `git config --get user.email`
+        @info[:username] = `git config --get user.name`
       rescue
       end
       Dir.chdir(pwd)
