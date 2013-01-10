@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.summary      = "ORC CLI"
   s.description  = "Test automation client tool"
   s.author       = "Pin Xie"
-  s.email        = "pxie@vmware.com"
+  s.email        = "support@vmware.com"
   s.homepage     = "http://www.vmware.com"
 
   s.files        = `git ls-files -- bin/* lib/*`.split("\n") + %w(README.md Rakefile config/commands.yml)
